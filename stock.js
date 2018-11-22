@@ -1,33 +1,26 @@
 var stock = {
-    randomInt: function (min, max) {
-        return Math.floor(Math.random()*(max-min+1)+min);
+    randomAroundZero: function () {
+        return Math.random() - 0.5;
     },
 
-    getStockPrice: function (stockName) {
-        const stocks = {
-            "dbwebb": {
-                rate: 1.2,
-                startingPoint: 2000,
-                fluctuations: [-8, 10]
-            },
-            "DIDD": {
-                rate: 1.15,
-                startingPoint: 6000,
-                fluctuations: [-2, 8]
-            }
-        };
+    normalcdf: function (X) {   //HASTINGS.  MAX ERROR = .000001
+        const T = 1/(1 + 0.2316419 * Math.abs(X));
+        const D = 0.3989423 * Math.exp(-X * X / 2);
+        let Prob = D * T * (0.3193815 + T * (-0.3565638 + T * (1.781478 + T * (-1.821256 + T * 1.330274))));
+        if (X>0) {
+        	Prob = 1 - Prob;
+        }
+        return Prob;
+    },
 
-        var startT = Math.floor(new Date(2018, 8, 17, 14) / 1000)
-        var t = Math.floor(new Date() / 1000);
-        var rate = stocks[stockName]["rate"];
-        var startingPoint = stocks[stockName]["startingPoint"];
-        var delta = (t - startT);
-        var fluctuation = stock.randomInt(
-            stocks[stockName]["fluctuations"][0],
-            stocks[stockName]["fluctuations"][1]
-        );
+    getStockPrice: function (stock) {
+        const rate = stock["rate"];
+        const startingPoint = stock["startingPoint"];
+        const sigma = stock["sigma"];
 
-        return (rate * delta + startingPoint + fluctuation) / 1000;
+        const norm = (this.normalcdf((this.randomAroundZero() - rate) / sigma)) / 100;
+
+        return Math.round(startingPoint * (1 + norm) * 100) / 100;
     }
 };
 

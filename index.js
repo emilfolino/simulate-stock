@@ -1,9 +1,23 @@
 var app = require('express')();
 var http = require('http').Server(app);
-var io = require('socket.io')(http);
+const io = require('socket.io')(http);
+const stock = require("./stock.js");
 
-var stock = require("./stock.js");
+var princessTarta = {
+    name: "Princesstårta",
+    rate: 0.2,
+    sigma: 1.8,
+    startingPoint: 20,
+};
 
+var mandelKubb = {
+    name: "Mandel kubb",
+    rate: 0.1,
+    sigma: 1.5,
+    startingPoint: 20,
+};
+
+var cakes = [princessTarta, mandelKubb];
 
 app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
@@ -15,13 +29,16 @@ io.on('connection', function(socket){
         console.log('user disconnected');
     });
 });
-setInterval(function () {
-    var stocks = {
-        "dbwebb": stock.getStockPrice("dbwebb"),
-        "DIDD": stock.getStockPrice("DIDD"),
-    };
 
-    io.emit("stocks", JSON.stringify(stocks));
+setInterval(function () {
+    cakes.map((cake) => {
+        cake["startingPoint"] = stock.getStockPrice(cake);
+        return cake;
+    });
+
+    console.log(cakes);
+
+    io.emit("stocks", JSON.stringify(cakes));
 }, 1000);
 
 
