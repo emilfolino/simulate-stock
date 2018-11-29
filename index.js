@@ -38,10 +38,12 @@ setInterval(function () {
         return cake;
     });
 
+    // console.log(cakes);
+
     io.emit("stocks", cakes);
-}, 1000);
+}, 5000);
 
 
-http.listen(8811, function(){
-   console.log('listening on *:8811');
+http.listen(3000, function(){
+   console.log('listening on *:3000');
 });
