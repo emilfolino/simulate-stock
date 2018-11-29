@@ -1,0 +1,21 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 100%;
+}
+
+body {
+    font-size: 1.2em;
+    font-family: Helvetica, Arial;
+}
+
+.main {
+    width: 64em;
+    margin: 2em auto 0;
+    background-color: #cec;
+    padding: 2em;
+}
