@@ -5,15 +5,15 @@ const stock = require("./stock.js");
 
 var princessTarta = {
     name: "Princesstårta",
-    rate: 0.2,
-    sigma: 1.8,
+    rate: 1.002,
+    variance: 0.6,
     startingPoint: 20,
 };
 
 var mandelKubb = {
     name: "Mandel kubb",
-    rate: 0.1,
-    sigma: 1.5,
+    rate: 1.003,
+    variance: 0.2,
     startingPoint: 20,
 };
 
@@ -30,15 +30,15 @@ io.on('connection', function(socket){
     });
 });
 
+var index = 1;
+
 setInterval(function () {
     cakes.map((cake) => {
         cake["startingPoint"] = stock.getStockPrice(cake);
         return cake;
     });
 
-    console.log(cakes);
-
-    io.emit("stocks", JSON.stringify(cakes));
+    io.emit("stocks", cakes);
 }, 1000);
 
 
