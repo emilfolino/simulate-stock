@@ -19,3 +19,11 @@ body {
     background-color: #cec;
     padding: 2em;
 }
+
+@media (max-width: 78em) {
+    .main {
+        width: 96%;
+        margin: 2em 2% 0;
+        padding: 1em;
+    }
+}
