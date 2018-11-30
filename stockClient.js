@@ -76,7 +76,7 @@ function createGraph(parent, element, index) {
             color: colors[index%(colors.length)],
         }], undefined, {
             timeInterval: 5000,
-            maxDataPoints: 100,
+            maxDataPoints: 1000,
             timeBase: new Date().getTime() / 1000
         })
     });
