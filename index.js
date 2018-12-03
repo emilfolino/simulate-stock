@@ -12,7 +12,7 @@ var princessTarta = {
 
 var mandelKubb = {
     name: "Mandel kubb",
-    rate: 1.003,
+    rate: 1.001,
     variance: 0.4,
     startingPoint: 20,
 };
