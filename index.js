@@ -19,18 +19,16 @@ var mandelKubb = {
 
 var cakes = [princessTarta, mandelKubb];
 
-app.get('/', function(req, res){
+app.get('/', function(req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
-io.on('connection', function(socket){
+io.on('connection', function(socket) {
     console.log('a user connected');
-    socket.on('disconnect', function(){
+    socket.on('disconnect', function() {
         console.log('user disconnected');
     });
 });
-
-var index = 1;
 
 setInterval(function () {
     cakes.map((cake) => {
@@ -44,6 +42,6 @@ setInterval(function () {
 }, 5000);
 
 
-http.listen(3000, function(){
+http.listen(3000, function() {
    console.log('listening on *:3000');
 });

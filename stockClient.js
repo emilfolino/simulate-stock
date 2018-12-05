@@ -5,7 +5,6 @@ import 'rickshaw/rickshaw.min.css';
 (function() {
     let graphs = {};
     let first = true;
-    let index = 0;
     let graphContainer = document.getElementById("graphs");
     let socket = io.connect("http://localhost:3000");
 
@@ -20,7 +19,8 @@ import 'rickshaw/rickshaw.min.css';
     socket.on('stocks', (message) => {
         if (first) {
             var palette = new Rickshaw.Color.Palette({ scheme: 'colorwheel' });
-            message.map((cake, index) => {
+
+            message.map((cake) => {
                 let graphTitle = document.createElement("h1");
 
                 graphTitle.textContent = cake.name;
@@ -49,15 +49,15 @@ import 'rickshaw/rickshaw.min.css';
                     width: graphContainer.clientWidth,
                 });
 
-                var axes = new Rickshaw.Graph.Axis.Time( { graph: graph } );
+                new Rickshaw.Graph.Axis.Time( { graph: graph } );
 
-                var y_ticks = new Rickshaw.Graph.Axis.Y({
+                new Rickshaw.Graph.Axis.Y({
                     graph: graph,
                     orientation: 'left',
                     tickFormat: Rickshaw.Fixtures.Number.formatKMBT
                 });
 
-                var hoverDetail = new Rickshaw.Graph.HoverDetail({
+                new Rickshaw.Graph.HoverDetail({
                     graph: graph
                 });
 
@@ -76,21 +76,19 @@ import 'rickshaw/rickshaw.min.css';
         message.map((cake) => {
             let slug = slugify(cake.name);
             let data = {};
-            data[cake.name] = cake.startingPoint;
 
+            data[cake.name] = cake.startingPoint;
             graphs[slug].graph.series.addData(data);
             graphs[slug].graph.render();
         });
-
-        index++;
     });
 })();
 
 function slugify(text) {
     return text.toString().toLowerCase()
     .replace(/\s+/g, '-')           // Replace spaces with -
-    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-    .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+    .replace(/[^\w-]+/g, '')       // Remove all non-word chars
+    .replace(/--+/g, '-')         // Replace multiple - with single -
     .replace(/^-+/, '')             // Trim - from start of text
     .replace(/-+$/, '');            // Trim - from end of text
 }
